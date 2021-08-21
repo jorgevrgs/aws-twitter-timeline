@@ -1,0 +1,45 @@
+{
+  "paths": [
+    {
+      "name": "/users",
+      "lambdaFunction": "usersLambda",
+      "privacy": {
+        "protected": true,
+        "auth": [
+          "/POST",
+          "/GET",
+          "/PUT",
+          "/PATCH",
+          "/DELETE"
+        ],
+        "unauth": [
+          "/GET"
+        ]
+      },
+      "policyResourceName": "/users"
+    }
+  ],
+  "resourceName": "usersApi",
+  "apiName": "usersApi",
+  "functionArns": [
+    {
+      "lambdaFunction": "usersLambda"
+    }
+  ],
+  "privacy": {
+    "auth": 1,
+    "unauth": 1,
+    "authRoleName": "amplify-twitterprofile-dev-82307-authRole",
+    "unAuthRoleName": "amplify-twitterprofile-dev-82307-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "usersLambda",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}
