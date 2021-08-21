@@ -1,11 +1,69 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login">Login</router-link>
+    <div class="home-link">
+      <router-link to="/">Home</router-link>
+    </div>
+
+    <template v-if="isAuthenticated">
+      <div class="profile-">
+        <router-link :to="{ name: 'Profile' }">Profile</router-link>
+      </div>
+      <div class="signuot">
+        <amplify-sign-out button-text="Sign Out"></amplify-sign-out>
+      </div>
+    </template>
+
+    <div v-else class="login-link">
+      <router-link :to="{ name: 'Login' }">Login</router-link>
+    </div>
   </div>
 
-  <router-view />
+  <transition>
+    <router-view />
+  </transition>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+import { onAuthUIStateChange } from "@aws-amplify/ui-components";
+
+export default {
+  data() {
+    return {
+      unsubscribeAuth: undefined,
+    };
+  },
+  computed: {
+    ...mapGetters(["authState", "authData", "isAuthenticated"]),
+  },
+  name: "AuthStateApp",
+  created() {
+    this.unsubscribeAuth = onAuthUIStateChange((authState, authData) => {
+      console.log({ authState, authData });
+
+      if (authState === "signedin") {
+        // @TODO: Create user
+        // this.$store.dispatch("createUser", {
+        //   id: authData.userDataKey,
+        // });
+        // this.$store.dispatch("readUser", authData.userDataKey);
+      }
+
+      this.$store.commit("SET_AUTH_STATE", authState);
+      this.$store.commit("SET_AUTH_DATA", authData);
+
+      if (this.isAuthenticated) {
+        this.$router.push({ name: "Profile" });
+      } else {
+        this.$router.push({ name: "Login" });
+      }
+    });
+  },
+  beforeUnmount() {
+    this.unsubscribeAuth();
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -18,6 +76,9 @@
 
 #nav {
   padding: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
   a {
     font-weight: bold;
