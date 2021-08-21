@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-twitterprofile-dev-82307-authRole",
+      "UnauthRoleArn": "arn:aws:iam::849193269885:role/amplify-twitterprofile-dev-82307-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::849193269885:role/amplify-twitterprofile-dev-82307-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-twitterprofile-dev-82307-deployment",
+      "UnauthRoleName": "amplify-twitterprofile-dev-82307-unauthRole",
+      "StackName": "amplify-twitterprofile-dev-82307",
+      "StackId": "arn:aws:cloudformation:us-east-1:849193269885:stack/amplify-twitterprofile-dev-82307/ee194400-0282-11ec-8f08-0aa2b071126f",
+      "AmplifyAppId": "d2b5w86hhy4wjd"
+    }
+  }
+}
