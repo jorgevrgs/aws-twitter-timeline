@@ -1,0 +1,38 @@
+{
+  "paths": [
+    {
+      "name": "/twitter",
+      "lambdaFunction": "twitterLambda",
+      "privacy": {
+        "private": true,
+        "auth": [
+          "/GET"
+        ]
+      },
+      "policyResourceName": "/twitter"
+    }
+  ],
+  "resourceName": "timelineApi",
+  "apiName": "timelineApi",
+  "functionArns": [
+    {
+      "lambdaFunction": "twitterLambda"
+    }
+  ],
+  "privacy": {
+    "auth": 1,
+    "unauth": 0,
+    "authRoleName": "amplify-twitterprofile-dev-82307-authRole",
+    "unAuthRoleName": "amplify-twitterprofile-dev-82307-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "twitterLambda",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

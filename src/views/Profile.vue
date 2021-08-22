@@ -12,7 +12,10 @@
             <div v-if="me" class="title">
               <span v-if="me.firstName">{{ me.firstName }}'s</span> Timeline
             </div>
-            <div class="timeline">
+
+            <loading-spinner v-if="isLoading" :is-loading="true" />
+
+            <div class="timeline" v-if="!isLoading && user">
               <twitter-timeline :items="items" :user="user"></twitter-timeline>
 
               <a :href="'https://twitter.com/' + user.username" target="_blank"
@@ -42,68 +45,51 @@
 <script>
 import TwitterTimeline from "../components/TwitterTimeline.vue";
 import AvatarImage from "../components/AvatarImage.vue";
+import LoadingSpinner from "../components/LoadingSpinner.vue";
 import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      items: [
-        {
-          id: "1428812144355815427",
-          text: "@_nasch_ Configuré Prettier; así que yo no tengo la culpa 😂",
-        },
-        {
-          id: "1422515493404090394",
-          text: "@lirrums Yooooo. Invicto o asintomático 🙄 😅",
-        },
-        {
-          id: "1418552606604075009",
-          text: "@ravinwashere Internet",
-        },
-        {
-          id: "1415365347125780480",
-          text: "An important date: getting COVID-19 vaccine today. #COVIDVaccination",
-        },
-        {
-          id: "1407732963027062785",
-          text: "RT @sails_conf: Sails is not dead, Sails is not dying and it’s going to be very hard to get rid of it - @mikermcneil\n\ncc @sailsjs\n\n#SC2021…",
-        },
-      ],
-      user: {
-        created_at: "2010-05-01T19:07:33.000Z",
-        username: "jorgevrgs1",
-        profile_image_url:
-          "https://pbs.twimg.com/profile_images/1353464259771052032/-cCrxYaS_normal.jpg",
-        protected: false,
-        url: "https://t.co/qtdcTR9nVE",
-        name: "Jorge Vargas",
-        id: "139164117",
-        location: "Sogamoso, Colombia",
-        verified: false,
-        description:
-          "Web developer Node.js (Express, Fastify, Sails), PHP, JavaScript, Vue, Nuxt. Looking for a remote, entry-level and full-time job.",
-        entities: {
-          url: {
-            urls: [
-              {
-                start: 0,
-                end: 23,
-                url: "https://t.co/qtdcTR9nVE",
-                expanded_url: "http://www.biomedicos.co",
-                display_url: "biomedicos.co",
-              },
-            ],
-          },
-        },
-      },
+      isLoading: false,
     };
   },
   computed: {
-    ...mapGetters(["me"]),
+    ...mapGetters(["me", "twitter"]),
+    user() {
+      return this.twitter?.user;
+    },
+    items() {
+      return this.twitter?.twits;
+    },
   },
   components: {
     TwitterTimeline,
     AvatarImage,
+    LoadingSpinner,
+  },
+  methods: {
+    async loadTwits() {
+      this.isLoading = true;
+
+      await this.$store.dispatch("getIdByUsername", this.me.twitterUsername);
+      const userId = this.twitter?.user?.id;
+      await this.$store.dispatch("getTimelineById", userId);
+
+      this.isLoading = false;
+    },
+  },
+  async mounted() {
+    if (this.me?.twitterUsername) {
+      this.loadTwits();
+    }
+  },
+  watch: {
+    me(val) {
+      if (val) {
+        this.loadTwits();
+      }
+    },
   },
 };
 </script>

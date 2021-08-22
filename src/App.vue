@@ -18,9 +18,11 @@
     </div>
   </div>
 
-  <transition>
-    <router-view />
-  </transition>
+  <router-view v-slot="{ Component }">
+    <transition>
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
 
 <script>
@@ -34,13 +36,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authState", "authData", "isAuthenticated", "me"]),
+    ...mapGetters([
+      "authState",
+      "authData",
+      "isAuthenticated",
+      "me",
+      "twitter",
+    ]),
   },
   name: "AuthStateApp",
   created() {
     this.unsubscribeAuth = onAuthUIStateChange(async (authState, authData) => {
-      console.log({ authState, authData });
-
       if (authState === "signedin") {
         this.$store.dispatch("readUser", authData.attributes.sub);
       }

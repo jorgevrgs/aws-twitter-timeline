@@ -14,6 +14,16 @@
     "categories": {
       "auth": {
         "cognito01ede75d": {}
+      },
+      "function": {
+        "usersLambda": {
+          "deploymentBucketName": "amplify-twitterprofile-dev-82307-deployment",
+          "s3Key": "amplify-builds/usersLambda-2b79346c533778546b6f-build.zip"
+        },
+        "twitterLambda": {
+          "deploymentBucketName": "amplify-twitterprofile-dev-82307-deployment",
+          "s3Key": "amplify-builds/twitterLambda-35676650526f7376524b-build.zip"
+        }
       }
     }
   }

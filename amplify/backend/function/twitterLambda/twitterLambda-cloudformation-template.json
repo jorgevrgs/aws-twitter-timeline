@@ -16,13 +16,9 @@
     "s3Key": {
       "Type": "String"
     },
-    "storageusersDynamoName": {
+    "twitterBearerToken": {
       "Type": "String",
-      "Default": "storageusersDynamoName"
-    },
-    "storageusersDynamoArn": {
-      "Type": "String",
-      "Default": "storageusersDynamoArn"
+      "Default": ""
     }
   },
   "Conditions": {
@@ -55,12 +51,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "usersLambda",
+            "twitterLambda",
             {
               "Fn::Join": [
                 "",
                 [
-                  "usersLambda",
+                  "twitterLambda",
                   "-",
                   {
                     "Ref": "env"
@@ -77,14 +73,14 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "TWITTER_BEARER_TOKEN": {
+              "Ref": "twitterBearerToken"
             }
           }
         },
         "Role": {
-          "Fn::GetAtt": [
-            "LambdaExecutionRole",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
         },
         "Runtime": "nodejs14.x",
         "Layers": [],
@@ -97,12 +93,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "twitterprofileLambdaRolec95be5ad",
+            "twitterprofileLambdaRole3d37bdd0",
             {
               "Fn::Join": [
                 "",
                 [
-                  "twitterprofileLambdaRolec95be5ad",
+                  "twitterprofileLambdaRole3d37bdd0",
                   "-",
                   {
                     "Ref": "env"
@@ -118,22 +114,16 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": ["lambda.amazonaws.com"]
               },
-              "Action": [
-                "sts:AssumeRole"
-              ]
+              "Action": ["sts:AssumeRole"]
             }
           ]
         }
       }
     },
     "lambdaexecutionpolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
+      "DependsOn": ["LambdaExecutionRole"],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "lambda-execution-policy",
@@ -168,34 +158,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:DescribeTable",
-                "dynamodb:GetItem",
-                "dynamodb:Query",
-                "dynamodb:Scan",
-                "dynamodb:PutItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem"
-              ],
-              "Resource": [
-                {
-                  "Ref": "storageusersDynamoArn"
-                },
-                {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Ref": "storageusersDynamoArn"
-                      },
-                      "index/*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }
@@ -210,10 +172,7 @@
     },
     "Arn": {
       "Value": {
-        "Fn::GetAtt": [
-          "LambdaFunction",
-          "Arn"
-        ]
+        "Fn::GetAtt": ["LambdaFunction", "Arn"]
       }
     },
     "Region": {

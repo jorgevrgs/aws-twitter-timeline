@@ -24,6 +24,11 @@
           }
         }
       ]
+    },
+    "twitterLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "auth": {
@@ -41,6 +46,20 @@
         {
           "category": "function",
           "resourceName": "usersLambda",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "timelineApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "twitterLambda",
           "attributes": [
             "Name",
             "Arn"
