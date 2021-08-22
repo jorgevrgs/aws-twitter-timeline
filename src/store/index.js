@@ -20,24 +20,23 @@ export default createStore({
     SET_USER: (state, payload) => (state.me = payload),
   },
   actions: {
-    readUser({ commit }, data) {
-      API.get("usersApi", "/users/" + data)
-        .then((user) => {
-          console.log("readUser", user);
-
-          commit("SET_USER", user);
-        })
-        .catch(console.error);
+    async readUser({ commit }, data) {
+      try {
+        const user = await API.get("usersApi", "/users/" + data);
+        commit("SET_USER", user);
+      } catch (error) {
+        console.error(error);
+      }
     },
 
-    updateUser({ commit }, { id, ...data }) {
-      API.put("usersApi", "/users/" + id, { body: data })
-        .then((user) => {
-          console.log("updateUser", user);
-
-          commit("SET_USER", user);
-        })
-        .catch(console.error);
+    async updateUser({ commit }, { id, ...data }) {
+      try {
+        await API.put("usersApi", "/users/" + id, { body: data });
+        const user = await API.get("usersApi", "/users/" + data);
+        commit("SET_USER", user);
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   modules: {},

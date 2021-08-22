@@ -7,9 +7,9 @@
 
       <div class="columns">
         <div class="left-column">
-          <div class="avatar"><img :src="avatar" /></div>
+          <div v-if="me" class="avatar"><avatar-image :user="me" /></div>
           <div class="card">
-            <div class="title">
+            <div v-if="me" class="title">
               <span v-if="me.firstName">{{ me.firstName }}'s</span> Timeline
             </div>
             <div class="timeline">
@@ -23,13 +23,13 @@
         </div>
 
         <div class="right-column">
-          <div class="fullName">
+          <div v-if="me && me.firstName && me.lastName" class="fullName">
             <div class="firstName">{{ me.firstName }}</div>
             <div class="lastName">{{ me.lastName }}</div>
           </div>
           <div class="card summary">
             <div class="title">My Work Experience</div>
-            <div class="content">
+            <div v-if="me && me.workExperience" class="content">
               {{ me.workExperience }}
             </div>
           </div>
@@ -40,14 +40,13 @@
 </template>
 
 <script>
-import crypto from "crypto";
 import TwitterTimeline from "../components/TwitterTimeline.vue";
+import AvatarImage from "../components/AvatarImage.vue";
 import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      avatar: "",
       items: [
         {
           id: "1428812144355815427",
@@ -104,11 +103,7 @@ export default {
   },
   components: {
     TwitterTimeline,
-  },
-  mounted() {
-    this.avatar = "https://www.gravatar.com/avatar/";
-    this.avatar += crypto.createHash("md5").update("abc").digest("hex");
-    this.avatar += "?s=200";
+    AvatarImage,
   },
 };
 </script>

@@ -34,20 +34,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authState", "authData", "isAuthenticated"]),
+    ...mapGetters(["authState", "authData", "isAuthenticated", "me"]),
   },
   name: "AuthStateApp",
   created() {
-    this.unsubscribeAuth = onAuthUIStateChange((authState, authData) => {
+    this.unsubscribeAuth = onAuthUIStateChange(async (authState, authData) => {
       console.log({ authState, authData });
 
       if (authState === "signedin") {
-        // this.$store.dispatch("updateUser", {
-        //   id: authData.attributes.sub,
-        //   username: authData.username,
-        //   email: authData.attributes.email,
-        // });
-
         this.$store.dispatch("readUser", authData.attributes.sub);
       }
 

@@ -38,6 +38,17 @@
         </div>
 
         <div class="form-group">
+          <label class="label" for="imageUrl">Image URL</label>
+          <input
+            class="input"
+            type="text"
+            id="imageUrl"
+            v-model.trim="formData.imageUrl"
+            placeholder="https://www.gravatar.com/avatar/900150983cd24fb0d6963f7d28e17f72?s=200"
+          />
+        </div>
+
+        <div class="form-group">
           <label class="label" for="workExperience">Work Experience</label>
           <textarea
             class="textarea"
@@ -76,6 +87,7 @@ export default {
         workExperience: "",
         firstName: "",
         lastName: "",
+        imageUrl: "",
       },
     };
   },
@@ -94,13 +106,12 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("readUser", this.authData.attributes.sub);
-
     this.formData.id = this.me.id;
     this.formData.firstName = this.me.firstName;
     this.formData.lastName = this.me.lastName;
     this.formData.twitterUsername = this.me.twitterUsername;
     this.formData.workExperience = this.me.workExperience;
+    this.formData.imageUrl = this.me.imageUrl;
   },
 };
 </script>
