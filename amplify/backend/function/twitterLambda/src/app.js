@@ -57,6 +57,7 @@ app.get("/twitter/timeline/:id", async function (req, res) {
 
     const response = await axios.get(url, {
       params: {
+        max_results: 5,
         "tweet.fields":
           "author_id,context_annotations,conversation_id,created_at,entities,geo,id,in_reply_to_user_id,possibly_sensitive,reply_settings,source,text,withheld",
       },
