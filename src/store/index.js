@@ -20,18 +20,8 @@ export default createStore({
     SET_USER: (state, payload) => (state.me = payload),
   },
   actions: {
-    createUser({ commit }, data) {
-      API.post("usersApi", "/users", { body: data })
-        .then((user) => {
-          console.log("createUser", user);
-
-          commit("SET_USER", user);
-        })
-        .catch("createUser", console.error);
-    },
-
     readUser({ commit }, data) {
-      API.get("usersApi", "/users/object/" + data)
+      API.get("usersApi", "/users/" + data)
         .then((user) => {
           console.log("readUser", user);
 
@@ -41,19 +31,9 @@ export default createStore({
     },
 
     updateUser({ commit }, { id, ...data }) {
-      API.put("usersApi", "/users/" + id, data)
+      API.put("usersApi", "/users/" + id, { body: data })
         .then((user) => {
-          console.log("readUser", user);
-
-          commit("SET_USER", user);
-        })
-        .catch(console.error);
-    },
-
-    deleteUser({ commit }, { id }) {
-      API.delete("usersApi", "/users/" + id)
-        .then((user) => {
-          console.log("readUser", user);
+          console.log("updateUser", user);
 
           commit("SET_USER", user);
         })

@@ -9,7 +9,9 @@
         <div class="left-column">
           <div class="avatar"><img :src="avatar" /></div>
           <div class="card">
-            <div class="title">John's Timeline</div>
+            <div class="title">
+              <span v-if="me.firstName">{{ me.firstName }}'s</span> Timeline
+            </div>
             <div class="timeline">
               <twitter-timeline :items="items" :user="user"></twitter-timeline>
 
@@ -22,20 +24,13 @@
 
         <div class="right-column">
           <div class="fullName">
-            <div class="firstName">John</div>
-            <div class="lastName">Doe</div>
+            <div class="firstName">{{ me.firstName }}</div>
+            <div class="lastName">{{ me.lastName }}</div>
           </div>
           <div class="card summary">
             <div class="title">My Work Experience</div>
             <div class="content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Recusandae fuga cumque ex nesciunt facere assumenda. Aut ipsa,
-              quas, quidem quaerat repellendus eum odio repellat quis harum
-              eveniet tempore, cumque omnis? Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Nesciunt in nobis laboriosam
-              corrupti nulla alias rem dicta eligendi ex saepe quas quae
-              deserunt quibusdam recusandae, esse beatae exercitationem
-              dignissimos placeat!
+              {{ me.workExperience }}
             </div>
           </div>
         </div>
@@ -47,6 +42,7 @@
 <script>
 import crypto from "crypto";
 import TwitterTimeline from "../components/TwitterTimeline.vue";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -102,6 +98,9 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    ...mapGetters(["me"]),
   },
   components: {
     TwitterTimeline,
@@ -179,6 +178,7 @@ export default {
         .summary {
           .content {
             text-align: justify;
+            white-space: pre-wrap;
           }
         }
       }

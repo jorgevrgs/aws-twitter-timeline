@@ -65,10 +65,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       formData: {
+        id: "",
         twitterUsername: "",
         workExperience: "",
         firstName: "",
@@ -76,9 +79,12 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(["authData", "me"]),
+  },
   methods: {
     onSubmit() {
-      console.log(this.formData);
+      this.$store.dispatch("updateUser", this.formData);
 
       this.$router.push({ name: "Profile" });
     },
@@ -86,6 +92,15 @@ export default {
     onCancel() {
       this.$router.push({ name: "Profile" });
     },
+  },
+  mounted() {
+    this.$store.dispatch("readUser", this.authData.attributes.sub);
+
+    this.formData.id = this.me.id;
+    this.formData.firstName = this.me.firstName;
+    this.formData.lastName = this.me.lastName;
+    this.formData.twitterUsername = this.me.twitterUsername;
+    this.formData.workExperience = this.me.workExperience;
   },
 };
 </script>

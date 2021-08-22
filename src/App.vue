@@ -42,11 +42,13 @@ export default {
       console.log({ authState, authData });
 
       if (authState === "signedin") {
-        // @TODO: Create user
-        // this.$store.dispatch("createUser", {
-        //   id: authData.userDataKey,
+        // this.$store.dispatch("updateUser", {
+        //   id: authData.attributes.sub,
+        //   username: authData.username,
+        //   email: authData.attributes.email,
         // });
-        // this.$store.dispatch("readUser", authData.userDataKey);
+
+        this.$store.dispatch("readUser", authData.attributes.sub);
       }
 
       this.$store.commit("SET_AUTH_STATE", authState);

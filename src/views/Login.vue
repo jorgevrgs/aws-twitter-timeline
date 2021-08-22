@@ -8,7 +8,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { API } from "aws-amplify";
 
 export default {
   data() {
@@ -18,10 +17,6 @@ export default {
   },
   computed: {
     ...mapGetters(["authState", "authData", "me"]),
-  },
-  mounted() {
-    // what
-    API.get("usersApi", "/users/1", {}).then(console.log).catch(console.error);
   },
 };
 </script>
