@@ -95,8 +95,9 @@ export default {
     ...mapGetters(["authData", "me"]),
   },
   methods: {
-    onSubmit() {
-      this.$store.dispatch("updateUser", this.formData);
+    async onSubmit() {
+      await this.$store.dispatch("updateUser", this.formData);
+      await this.$store.dispatch("readUser", this.formData.id);
 
       this.$router.push({ name: "Profile" });
     },
