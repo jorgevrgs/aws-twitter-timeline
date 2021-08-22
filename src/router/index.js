@@ -40,6 +40,14 @@ const routes = [
       redirectToLoginPageIfSignedOut: true,
     },
   },
+  {
+    path: "/profile/edit",
+    name: "EditProfile",
+    component: () => import("../views/EditProfile.vue"),
+    meta: {
+      redirectToLoginPageIfSignedOut: true,
+    },
+  },
 ];
 
 const router = createRouter({
