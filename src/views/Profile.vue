@@ -1,8 +1,13 @@
 <template>
   <div id="profile" v-cloak>
+    <h1 data-test="page-title">Profile</h1>
+
     <main class="container">
       <nav class="edit-link">
-        <router-link :to="{ name: 'EditProfile' }" class="edit-link-anchor"
+        <router-link
+          :to="{ name: 'EditProfile' }"
+          class="edit-link-anchor"
+          data-test="profile-page-edit-link"
           >Edit Profile</router-link
         >
       </nav>

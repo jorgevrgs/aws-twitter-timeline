@@ -13,7 +13,7 @@
       </div>
     </template>
 
-    <div v-else class="login-link">
+    <div v-else class="login-link" data-test="nav-bar-login-link">
       <router-link :to="{ name: 'Login' }">Login</router-link>
     </div>
   </div>

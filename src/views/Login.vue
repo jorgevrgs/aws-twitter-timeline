@@ -1,9 +1,11 @@
 <template>
-  <amplify-authenticator>
-    <div v-if="currentUser">
-      <div>Hello, {{ currentUser.username }}</div>
-    </div>
-  </amplify-authenticator>
+  <main data-test="authentication-form">
+    <amplify-authenticator>
+      <div v-if="currentUser">
+        <div>Hello, {{ currentUser.username }}</div>
+      </div>
+    </amplify-authenticator>
+  </main>
 </template>
 
 <script>
