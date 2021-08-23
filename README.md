@@ -59,21 +59,11 @@ Create an App in your [Projects & Apps](https://developer.twitter.com/en/portal/
 
 Copy this value in your [Environment variables](https://docs.aws.amazon.com/amplify/latest/userguide/environment-variables.html) with the name `TWITTER_BEARER_TOKEN`.
 
-Push backend
+### Setup Amplify Project
 
 ```
+amplify init
 amplify push
-```
-
-Run frontent locally
-
-```
-amplify serve
-```
-
-Publish frontend
-
-```
 amplify publish
 ```
 
