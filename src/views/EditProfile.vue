@@ -68,7 +68,9 @@
             value="Cancel"
           />
 
-          <button class="submit" type="submit">Update</button>
+          <button class="submit" type="submit" :disabled="isLoading">
+            Update
+          </button>
         </div>
       </form>
     </div>
@@ -81,6 +83,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      isLoading: false,
       formData: {
         id: "",
         twitterUsername: "",
@@ -96,7 +99,12 @@ export default {
   },
   methods: {
     async onSubmit() {
+      this.isLoading = true;
+
       await this.$store.dispatch("updateUser", this.formData);
+      await this.$store.dispatch("readUser", this.formData.id);
+
+      this.isLoading = false;
 
       this.$router.push({ name: "Profile" });
     },

@@ -1,7 +1,7 @@
 <template>
   <amplify-authenticator>
-    <div v-if="authState === 'signedin' && authData">
-      <div>Hello, {{ authData.username }}</div>
+    <div v-if="currentUser">
+      <div>Hello, {{ currentUser.username }}</div>
     </div>
   </amplify-authenticator>
 </template>
@@ -16,7 +16,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authState", "authData", "me"]),
+    ...mapGetters(["currentUser", "me"]),
   },
 };
 </script>

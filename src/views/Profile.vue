@@ -1,8 +1,10 @@
 <template>
-  <div id="profile">
+  <div id="profile" v-cloak>
     <main class="container">
       <nav class="edit-link">
-        <router-link :to="{ name: 'EditProfile' }">Edit Profile</router-link>
+        <router-link :to="{ name: 'EditProfile' }" class="edit-link-anchor"
+          >Edit Profile</router-link
+        >
       </nav>
 
       <div class="columns">

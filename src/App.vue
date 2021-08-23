@@ -1,26 +1,14 @@
 <template>
-  <div id="nav" v-cloak>
-    <div class="home-link">
-      <router-link to="/">Home</router-link>
-    </div>
+  <nav-bar :is-authenticated="isAuthenticated" />
 
-    <template v-if="isAuthenticated">
-      <div class="profile-">
-        <router-link :to="{ name: 'Profile' }">Profile</router-link>
-      </div>
-      <div class="signuot">
-        <amplify-sign-out button-text="Sign Out"></amplify-sign-out>
-      </div>
-    </template>
-
-    <div v-else class="login-link">
-      <router-link :to="{ name: 'Login' }">Login</router-link>
-    </div>
-  </div>
-
-  <router-view v-slot="{ Component }">
+  <section v-if="isLoading">
+    <loading-spinner v-if="isLoading" :is-loading="true" />
+  </section>
+  <router-view v-else v-slot="{ Component }">
     <transition>
-      <component :is="Component" />
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
     </transition>
   </router-view>
 </template>
@@ -28,31 +16,37 @@
 <script>
 import { mapGetters } from "vuex";
 import { onAuthUIStateChange } from "@aws-amplify/ui-components";
+import { Auth } from "aws-amplify";
+import LoadingSpinner from "./components/LoadingSpinner.vue";
+import NavBar from "./components/NavBar.vue";
 
 export default {
+  name: "AppLayout",
+  components: { LoadingSpinner, NavBar },
   data() {
     return {
+      isLoading: false,
       unsubscribeAuth: undefined,
     };
   },
   computed: {
-    ...mapGetters([
-      "authState",
-      "authData",
-      "isAuthenticated",
-      "me",
-      "twitter",
-    ]),
+    ...mapGetters(["currentUser", "isAuthenticated", "me"]),
   },
-  name: "AuthStateApp",
   created() {
     this.unsubscribeAuth = onAuthUIStateChange(async (authState, authData) => {
-      if (authState === "signedin") {
-        this.$store.dispatch("readUser", authData.attributes.sub);
+      this.isLoading = true;
+
+      if (authState === "signedin" && authData) {
+        // Logged in
+        const currentUser = await Auth.currentUserInfo();
+        this.$store.dispatch("readUser", currentUser.id);
+        this.$store.commit("SET_CURRENT_USER", currentUser);
+      } else {
+        // Logged out
+        this.$store.commit("SET_CURRENT_USER", undefined);
       }
 
-      this.$store.commit("SET_AUTH_STATE", authState);
-      this.$store.commit("SET_AUTH_DATA", authData);
+      this.isLoading = false;
 
       if (this.isAuthenticated) {
         this.$router.push({ name: "Profile" });
@@ -61,8 +55,26 @@ export default {
       }
     });
   },
+  async mounted() {
+    const currentUser = await Auth.currentUserInfo();
+
+    if (currentUser) {
+      this.$store.commit("SET_CURRENT_USER", currentUser);
+    }
+  },
   beforeUnmount() {
     this.unsubscribeAuth();
+  },
+  watch: {
+    async currentUser(currentUser) {
+      this.isLoading = true;
+
+      if (currentUser) {
+        await this.$store.dispatch("readUser", currentUser.id);
+      }
+
+      this.isLoading = false;
+    },
   },
 };
 </script>
