@@ -17,7 +17,7 @@ applyPolyfills().then(() => {
 });
 
 const app = createApp(App);
-app.config.compilerOptions.isCustomElement = (tag) =>
-  tag.startsWith("amplify-");
+// app.config.compilerOptions.isCustomElement = (tag) =>
+//   tag.startsWith("amplify-");
 
 app.use(store).use(router).mount("#app");
