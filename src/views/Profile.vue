@@ -14,7 +14,9 @@
 
       <div class="columns">
         <div class="left-column">
-          <div v-if="me" class="avatar"><avatar-image :user="me" /></div>
+          <div class="avatar" data-test="profile-imageUrl">
+            <avatar-image :user="me" />
+          </div>
           <div class="card">
             <div v-if="me" class="title">
               <span v-if="me.firstName">{{ me.firstName }}'s</span> Timeline
@@ -22,7 +24,11 @@
 
             <loading-spinner v-if="isLoading" :is-loading="true" />
 
-            <div class="timeline" v-if="!isLoading && user">
+            <div
+              class="timeline"
+              v-if="!isLoading && user"
+              data-test="profile-twitterTimeline"
+            >
               <twitter-timeline :items="items" :user="user"></twitter-timeline>
 
               <a :href="'https://twitter.com/' + user.username" target="_blank"
@@ -34,12 +40,20 @@
 
         <div class="right-column">
           <div v-if="me && me.firstName && me.lastName" class="fullName">
-            <div class="firstName">{{ me.firstName }}</div>
-            <div class="lastName">{{ me.lastName }}</div>
+            <div class="firstName" data-test="profile-firstName">
+              {{ me.firstName }}
+            </div>
+            <div class="lastName" data-test="profile-lastName">
+              {{ me.lastName }}
+            </div>
           </div>
           <div class="card summary">
             <div class="title">My Work Experience</div>
-            <div v-if="me && me.workExperience" class="content">
+            <div
+              v-if="me && me.workExperience"
+              class="content"
+              data-test="profile-workExperience"
+            >
               {{ me.workExperience }}
             </div>
           </div>

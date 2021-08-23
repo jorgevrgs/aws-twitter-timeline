@@ -18,21 +18,29 @@ export default {
       default: () => {},
     },
   },
-  mounted() {
-    if (
-      this.user &&
-      typeof this.user.imageUrl !== "undefined" &&
-      !this.user.imageUrl
-    ) {
-      this.avatar = "https://www.gravatar.com/avatar/";
-      this.avatar += crypto
-        .createHash("md5")
-        .update(this.user.id)
-        .digest("hex");
+  methods: {
+    getAvatar(str) {
+      let avatar = "https://www.gravatar.com/avatar/";
+      avatar += crypto.createHash("md5").update(str).digest("hex");
 
-      this.avatar += "?s=200";
+      avatar += "?s=200";
+
+      return avatar;
+    },
+  },
+  mounted() {
+    if (this.user && this.user.id) {
+      // User profile exists
+      if (this.user.imageUrl) {
+        // Image URL exists
+        this.avatar = this.user.imageUrl;
+      } else {
+        // Empty image URL
+        this.avatar = this.getAvatar(this.user.id);
+      }
     } else {
-      this.avatar = this.user.imageUrl;
+      // User profile empty
+      this.avatar = this.getAvatar(new Date());
     }
   },
 };

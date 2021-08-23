@@ -1,7 +1,7 @@
 <template>
   <main id="edit-profile">
     <div class="container">
-      <h1>Edit Profile</h1>
+      <h1 data-test="page-title">Edit Profile</h1>
 
       <form class="form" @submit.prevent="onSubmit()">
         <div class="form-group">
@@ -12,6 +12,7 @@
             id="firstName"
             v-model.trim="formData.firstName"
             placeholder="John"
+            data-test="edit-profile-input-firstName"
           />
         </div>
 
@@ -23,6 +24,7 @@
             id="lastName"
             v-model.trim="formData.lastName"
             placeholder="Doe"
+            data-test="edit-profile-input-lastName"
           />
         </div>
 
@@ -33,7 +35,8 @@
             type="text"
             id="twitterUsername"
             v-model.trim="formData.twitterUsername"
-            placeholder="@twitter"
+            placeholder="twitter"
+            data-test="edit-profile-input-twitterUsername"
           />
         </div>
 
@@ -41,10 +44,11 @@
           <label class="label" for="imageUrl">Image URL</label>
           <input
             class="input"
-            type="text"
+            type="url"
             id="imageUrl"
             v-model.trim="formData.imageUrl"
             placeholder="https://www.gravatar.com/avatar/900150983cd24fb0d6963f7d28e17f72?s=200"
+            data-test="edit-profile-input-imageUrl"
           />
         </div>
 
@@ -57,6 +61,7 @@
             v-model.trim="formData.workExperience"
             cols="30"
             rows="10"
+            data-test="edit-profile-input-workExperience"
           ></textarea>
         </div>
 
@@ -66,9 +71,15 @@
             type="button"
             @click="onCancel()"
             value="Cancel"
+            data-test="edit-profile-button-cancel"
           />
 
-          <button class="submit" type="submit" :disabled="isLoading">
+          <button
+            class="submit"
+            type="submit"
+            :disabled="isLoading"
+            data-test="edit-profile-button-submit"
+          >
             Update
           </button>
         </div>
